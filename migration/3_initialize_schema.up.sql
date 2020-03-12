@@ -1,0 +1,4 @@
+CREATE TABLE "User" (
+    "Id" UUID PRIMARY KEY,
+    "Name" VARCHAR (250)
+)
