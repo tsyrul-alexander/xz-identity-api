@@ -6,5 +6,5 @@ import (
 
 //Storage ...
 type Storage interface {
-	createUser(user *model.User) error
+	CreateUser(user *model.User) error
 }

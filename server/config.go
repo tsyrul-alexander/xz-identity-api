@@ -1,6 +1,7 @@
 package server
 
+//Config ...
 type Config struct {
-	Ip string
+	IP   string
 	Port int
 }
