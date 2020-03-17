@@ -1,12 +1,11 @@
 package server
 
 import (
-	"IdentityWebApi/controller"
-	"IdentityWebApi/storage"
+	"github.com/gorilla/mux"
+	"identity-web-api/controller"
+	"identity-web-api/storage"
 	"net/http"
 	"strconv"
-
-	"github.com/gorilla/mux"
 )
 
 //Server ...
@@ -30,7 +29,9 @@ func (s *Server) Start() error {
 //UseRouting ...
 func (s *Server) UseRouting() *mux.Router {
 	var router = mux.NewRouter()
-	var authorizationController = controller.AuthorizationController{Server: s}
+	var authorizationController = controller.AuthorizationController{Storage: s.Storage}
+	var authenticationController = controller.AuthenticationController{Storage: s.Storage}
 	router.HandleFunc("/authorization/register", authorizationController.Registration)
+	router.HandleFunc("/", authenticationController.Hello)
 	return router
 }

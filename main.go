@@ -1,24 +1,21 @@
 package main
 
 import (
-	"./server"
-	"./storage"
-	"fmt"
+	"identity-web-api/server"
+	"identity-web-api/storage"
+	"log"
 )
 
 func main() {
 	var setting = GetAppSetting()
-	fmt.Println(setting.Storage)
 	var serverConfig = server.Config{
-		IP:   "localhost",
-		Port: 8080,
+		IP:   setting.ServerIp,
+		Port: setting.ServerPort,
 	}
-	var connectionString = setting.Storage["connectionString"].(string)
-	var storageConfig = storage.Config{ConnectionString:connectionString}
+	var connectionString = setting.DbConnectionString
+	var storageConfig = storage.Config{ConnectionString: connectionString}
 	var dataStorage = storage.CreatePQStore(&storageConfig)
 	var s = server.Create(serverConfig, dataStorage)
 	var err = s.Start()
-	if err != nil {
-		fmt.Println(err.Error())
-	}
+	log.Fatalln(err)
 }

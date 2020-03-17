@@ -1,5 +1,0 @@
-{
-  "storage": {
-    "connectionString": "user=postgres password=123 dbname=Test sslmode=disable"
-  }
-}

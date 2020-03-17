@@ -1,7 +1,7 @@
 package storage
 
 import (
-	"../model"
+	"identity-web-api/model"
 )
 
 //Storage ...

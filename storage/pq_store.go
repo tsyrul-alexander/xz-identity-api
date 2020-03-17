@@ -1,9 +1,9 @@
 package storage
 
 import (
-	"../model"
 	"database/sql"
 	_ "github.com/lib/pq"
+	"identity-web-api/model"
 	"strings"
 )
 
