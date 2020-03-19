@@ -1,4 +1,4 @@
-package main
+package setting
 
 import (
 	"github.com/spf13/viper"
@@ -9,8 +9,9 @@ type AppSetting struct {
 	DbConnectionString string `mapstructure:"DB_CONNECTION_STRING"`
 	ServerIp string `mapstructure:"SERVICE_IP"`
 	ServerPort int `mapstructure:"SERVER_PORT"`
+	JwtKey string `mapstructure:"JWT_KEY"`
 }
-const fileName string = "config.json"
+const FilePath string = "config.json"
 var instance *AppSetting
 
 func GetAppSetting() *AppSetting {
@@ -39,7 +40,7 @@ func configureViper() *viper.Viper {
 	return v
 }
 func setConfigFile(v *viper.Viper)  {
-	v.SetConfigFile(fileName)
+	v.SetConfigFile(FilePath)
 	if err := v.ReadInConfig(); err != nil {
 		log.Fatalln(err.Error())
 	}

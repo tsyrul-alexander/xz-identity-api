@@ -1,8 +1,12 @@
 package server
 
 import (
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"identity-web-api/controller"
+	"identity-web-api/core/authentication"
+	"identity-web-api/core/authentication/jwt"
+	"identity-web-api/setting"
 	"identity-web-api/storage"
 	"net/http"
 	"strconv"
@@ -29,9 +33,18 @@ func (s *Server) Start() error {
 //UseRouting ...
 func (s *Server) UseRouting() *mux.Router {
 	var router = mux.NewRouter()
-	var authorizationController = controller.AuthorizationController{Storage: s.Storage}
+	router.Use(handlers.CORS(handlers.AllowedOrigins([]string{"*"})))
+	var authorizationController = controller.AuthorizationController{Storage: s.Storage, Authentication: getAuthenticationMethod()}
 	var authenticationController = controller.AuthenticationController{Storage: s.Storage}
-	router.HandleFunc("/authorization/register", authorizationController.Registration)
-	router.HandleFunc("/", authenticationController.Hello)
+	router.HandleFunc("/authorization/register", authorizationController.Registration).Methods("POST")
+	router.HandleFunc("/authorization/login", authenticationController.Login).Methods("POST")
+	router.HandleFunc("/ping", func(writer http.ResponseWriter, request *http.Request) {
+		controller.SetResponse(writer, "pong")
+	})
 	return router
+}
+
+func getAuthenticationMethod() authentication.Authentication {
+	var s = setting.GetAppSetting()
+	return &jwt.Authentication{JwtKey: s.JwtKey}
 }

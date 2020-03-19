@@ -2,12 +2,22 @@ package controller
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 )
 
-func setResponse(w http.ResponseWriter, data interface{}) error {
+//SetResponse ...
+func SetResponse(w http.ResponseWriter, data interface{}) {
 	w.Header().Add("Content-Type", "application/json")
-	return json.NewEncoder(w).Encode(data)
+	if err := json.NewEncoder(w).Encode(data); err != nil {
+		log.Println(err.Error())
+	}
+}
+
+func setError(w http.ResponseWriter, data ServiceError) {
+	log.Println(data.Message)
+	w.WriteHeader(data.StatusCode)
+	SetResponse(w, data)
 }
 
 func decodeJsonBody(r *http.Request, obj interface{}) error {

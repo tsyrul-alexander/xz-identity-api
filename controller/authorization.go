@@ -1,8 +1,10 @@
 package controller
 
 import (
-	"github.com/google/uuid"
+	"identity-web-api/core/authentication"
 	"identity-web-api/model"
+	"identity-web-api/model/request"
+	"identity-web-api/model/response"
 	"identity-web-api/storage"
 	"net/http"
 )
@@ -10,30 +12,30 @@ import (
 //AuthorizationController ...
 type AuthorizationController struct {
 	Storage storage.Storage
+	Authentication authentication.Authentication
 }
 
 //Registration ...
 func (controller *AuthorizationController) Registration(w http.ResponseWriter, r *http.Request) {
-	var userRegistration = model.UserRegistration{}
-	var err = decodeJsonBody(r, &userRegistration)
-	if err == nil {
-		err = createUser(controller.Storage, &userRegistration)
+	var userRegistration = request.UserRegistration{}
+	if err := decodeJsonBody(r, &userRegistration); err != nil {
+		setError(w, InvalidRequest)
+		return
 	}
+	var user = userRegistration.GetUser()
+	if err:= createUser(controller.Storage, user); err != nil {
+		setError(w, DbError)
+		return
+	}
+	var token, err = controller.Authentication.GenerateToken(user)
 	if err != nil {
-		err = setResponse(w, err.Error())
+		setError(w, GenerateTokenError)
 	}
-	err = setResponse(w, "Ok")
-	err = r.Body.Close()
+	SetResponse(w, &response.Registration{Token:token})
 }
-func createUser(dataStorage storage.Storage, userRegistration *model.UserRegistration) error {
-	var user = model.User{
-		ID:           uuid.New(),
-		Name:         userRegistration.Name,
-		IdentityType: model.IdentityTypeDefault,
-		DefaultIdentity: model.DefaultIdentity{
-			Login:    userRegistration.Login,
-			Password: userRegistration.Password,
-		},
-	}
-	return dataStorage.CreateUser(&user)
+
+//
+
+func createUser(dataStorage storage.Storage, user *model.User) error {
+	return dataStorage.CreateUser(user)
 }
