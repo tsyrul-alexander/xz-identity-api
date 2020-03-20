@@ -19,17 +19,17 @@ type AuthorizationController struct {
 func (controller *AuthorizationController) Registration(w http.ResponseWriter, r *http.Request) {
 	var userRegistration = request.UserRegistration{}
 	if err := decodeJsonBody(r, &userRegistration); err != nil {
-		setError(w, InvalidRequest)
+		setError(w, InvalidRequest, err)
 		return
 	}
 	var user = userRegistration.GetUser()
 	if err:= createUser(controller.Storage, user); err != nil {
-		setError(w, DbError)
+		setError(w, DbError, err)
 		return
 	}
 	var token, err = controller.Authentication.GenerateToken(user)
 	if err != nil {
-		setError(w, GenerateTokenError)
+		setError(w, GenerateTokenError, err)
 	}
 	SetResponse(w, &response.Registration{Token:token})
 }

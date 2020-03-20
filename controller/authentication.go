@@ -16,21 +16,21 @@ type AuthenticationController struct {
 func (controller *AuthenticationController)Login(w http.ResponseWriter, r *http.Request)  {
 	var userLogin = &request.UserLogin{}
 	if err := decodeJsonBody(r, &userLogin); err != nil {
-		setError(w, InvalidRequest)
+		setError(w, InvalidRequest, err)
 		return
 	}
 	var user, err = controller.Storage.GetUser(userLogin.Login)
 	if err != nil {
-		setError(w, DbError)
+		setError(w, DbError, err)
 		return
 	}
 	if !user.DefaultIdentity.Password.GetIsCompareHashPassword(userLogin.Password) {
-		setError(w, InvalidCredential)
+		setError(w, InvalidCredential, err)
 		return
 	}
 	var token, e = controller.Authentication.GenerateToken(user)
 	if e != nil {
-		setError(w, GenerateTokenError)
+		setError(w, GenerateTokenError, err)
 	}
 	SetResponse(w, response.Login{Token:token})
 }

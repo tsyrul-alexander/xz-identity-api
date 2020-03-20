@@ -14,8 +14,10 @@ func SetResponse(w http.ResponseWriter, data interface{}) {
 	}
 }
 
-func setError(w http.ResponseWriter, data ServiceError) {
-	log.Println(data.Message)
+func setError(w http.ResponseWriter, data ServiceError, e error) {
+	if e != nil {
+		log.Println(e.Error())
+	}
 	w.WriteHeader(data.StatusCode)
 	SetResponse(w, data)
 }

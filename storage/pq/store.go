@@ -5,10 +5,10 @@ import (
 	_ "github.com/lib/pq"
 	"identity-web-api/model"
 	"identity-web-api/storage"
-	"identity-web-api/storage/column"
-	"identity-web-api/storage/condition"
-	"identity-web-api/storage/join"
-	"identity-web-api/storage/query"
+	"t-storage/core/condition"
+	"t-storage/core/parameter"
+	"t-storage/pq/builder"
+	"t-storage/query"
 )
 //Storage ...
 type Storage struct {
@@ -46,8 +46,10 @@ func (store *Storage) CreateUser(user *model.User) error {
 
 //GetUser ...
 func (store *Storage) GetUser(login string) (*model.User, error) {
-	var conditions = getUserCondition(login)
-	var s = CreateSelect(UserTableName, getUserColumns(), getUserJoins(), &conditions)
+	var s = builder.CreateSelect(UserTableName)
+	setUserColumns(s)
+	setUserJoins(s)
+	setUserCondition(s, login)
 	var rows, err = store.ExecuteSelect(s)
 	if err != nil {
 		return nil, err
@@ -66,12 +68,12 @@ func (store *Storage) GetUser(login string) (*model.User, error) {
 }
 
 func getCreateUserInsert(user *model.User) *query.Insert {
-	var dictionary = map[string]column.ColumnValue{}
-	dictionary["Id"] = column.CreateGuidColumnValue(&user.ID)
-	dictionary["Name"] = column.CreateStringColumnValue(user.Name)
-	dictionary["IdentityType"] = column.CreateIntColumnValue(int(user.IdentityType))
-	dictionary["DefaultIdentityId"] = column.CreateGuidColumnValue(&user.DefaultIdentity.ID)
-	return CreateInsert(UserTableName, dictionary)
+	var columnValues = query.ColumnValueList{}
+	columnValues["Id"] = parameter.CreateGuidParameter(user.ID)
+	columnValues["Name"] = parameter.CreateStringParameter(user.Name)
+	columnValues["IdentityType"] = parameter.CreateIntParameter(int(user.IdentityType))
+	columnValues["DefaultIdentityId"] = parameter.CreateGuidParameter(user.DefaultIdentity.ID)
+	return builder.CreateInsert(UserTableName, &columnValues)
 }
 
 func getCreateUserCredentialsInsert(user *model.User) *query.Insert {
@@ -82,53 +84,26 @@ func getCreateUserCredentialsInsert(user *model.User) *query.Insert {
 }
 
 func getCreateUserDefaultCredentialsInsert(user *model.User) *query.Insert {
-	var dictionary = map[string]column.ColumnValue{}
-	dictionary["Id"] = column.CreateGuidColumnValue(&user.DefaultIdentity.ID)
-	dictionary["Login"] = column.CreateStringColumnValue(user.DefaultIdentity.Login)
-	dictionary["Password"] = column.CreateStringColumnValue(user.DefaultIdentity.Password.String())
-	return CreateInsert(DefaultIdentityTableName, dictionary)
+	var columnValues = query.ColumnValueList{}
+	columnValues["Id"] = parameter.CreateGuidParameter(user.DefaultIdentity.ID)
+	columnValues["Login"] = parameter.CreateStringParameter(user.DefaultIdentity.Login)
+	columnValues["Password"] = parameter.CreateStringParameter(user.DefaultIdentity.Password.String())
+	return builder.CreateInsert(DefaultIdentityTableName, &columnValues)
 }
 
-func getUserJoins() *[]*join.TableJoin {
-	return &[]*join.TableJoin {
-		{
-			Type:          join.InnerJoin,
-			JoinTableName: DefaultIdentityTableName,
-			Conditions: &condition.BinaryQueryCondition{
-				ComparisonType: condition.ComparisonTypeEqual,
-				LeftCondition: &condition.ColumnQueryCondition{
-					QueryColumn: CreateTableColumn("DefaultIdentityId", UserTableName),
-				},
-				RightCondition: &condition.ColumnQueryCondition{
-					QueryColumn: CreateTableColumn("Id", DefaultIdentityTableName),
-				},
-			},
-		},
-	}
+func setUserJoins(s *query.Select) {
+	s.AddLeftJoin(DefaultIdentityTableName, "Id", UserTableName, "DefaultIdentityId")
 }
 
-func getUserColumns() *[]*column.TableColumn {
-	return &[]*column.TableColumn {
-		CreateTableColumn("Id", UserTableName),
-		CreateTableColumn("Name", UserTableName),
-		CreateTableColumn("IdentityType", UserTableName),
-		CreateTableColumn("Id", DefaultIdentityTableName),
-		CreateTableColumn("Login", DefaultIdentityTableName),
-		CreateTableColumn("Password", DefaultIdentityTableName),
-	}
+func setUserColumns(s *query.Select) {
+	s.AddTableColumn(UserTableName, "Id")
+	s.AddTableColumn(UserTableName, "Name")
+	s.AddTableColumn(UserTableName, "IdentityType")
+	s.AddTableColumn(DefaultIdentityTableName, "Id")
+	s.AddTableColumn(DefaultIdentityTableName, "Login")
+	s.AddTableColumn(DefaultIdentityTableName, "Password")
 }
 
-	func getUserCondition(login string) condition.QueryCondition {
-		return &condition.BinaryQueryCondition{
-			ComparisonType: condition.ComparisonTypeEqual,
-			LeftCondition: &condition.ColumnQueryCondition{
-				QueryColumn: &column.TableColumn{
-					ColumnName: "Login",
-					TableName:  "DefaultIdentity",
-				},
-			},
-			RightCondition: &condition.ConstantQueryCondition{
-				Value: column.CreateStringColumnValue(login),
-			},
-		}
-	}
+func setUserCondition(s *query.Select, login string) {
+	s.AddColumnValueCondition(condition.ComparisonTypeEqual, DefaultIdentityTableName, "Login", login)
+}
