@@ -3,11 +3,11 @@ package server
 import (
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
-	"identity-web-api/controller"
-	"identity-web-api/core/authentication"
-	"identity-web-api/core/authentication/jwt"
-	"identity-web-api/setting"
-	"identity-web-api/storage"
+	"github.com/tsyrul-alexander/identity-web-api/controller"
+	"github.com/tsyrul-alexander/identity-web-api/core/authentication"
+	"github.com/tsyrul-alexander/identity-web-api/core/authentication/jwt"
+	"github.com/tsyrul-alexander/identity-web-api/setting"
+	"github.com/tsyrul-alexander/identity-web-api/storage"
 	"net/http"
 	"strconv"
 )

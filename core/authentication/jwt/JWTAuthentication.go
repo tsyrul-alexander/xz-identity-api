@@ -2,7 +2,7 @@ package jwt
 
 import (
 	jwt "github.com/dgrijalva/jwt-go"
-	"identity-web-api/model"
+	"github.com/tsyrul-alexander/identity-web-api/model"
 )
 
 type Authentication struct {

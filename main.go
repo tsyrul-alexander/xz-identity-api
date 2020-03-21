@@ -1,10 +1,10 @@
 package main
 
 import (
-	"identity-web-api/server"
-	"identity-web-api/setting"
-	"identity-web-api/storage"
-	"identity-web-api/storage/pq"
+	"github.com/tsyrul-alexander/identity-web-api/server"
+	"github.com/tsyrul-alexander/identity-web-api/setting"
+	"github.com/tsyrul-alexander/identity-web-api/storage"
+	"github.com/tsyrul-alexander/identity-web-api/storage/pq"
 	"log"
 )
 

@@ -1,11 +1,11 @@
 package controller
 
 import (
-	"identity-web-api/core/authentication"
-	"identity-web-api/model"
-	"identity-web-api/model/request"
-	"identity-web-api/model/response"
-	"identity-web-api/storage"
+	"github.com/tsyrul-alexander/identity-web-api/core/authentication"
+	"github.com/tsyrul-alexander/identity-web-api/model"
+	"github.com/tsyrul-alexander/identity-web-api/model/request"
+	"github.com/tsyrul-alexander/identity-web-api/model/response"
+	"github.com/tsyrul-alexander/identity-web-api/storage"
 	"net/http"
 )
 

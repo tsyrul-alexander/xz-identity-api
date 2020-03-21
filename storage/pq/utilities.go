@@ -2,7 +2,7 @@ package pq
 
 import (
 	"database/sql"
-	"t-storage/query"
+	"github.com/tsyrul-alexander/go-query-builder/query"
 )
 
 const providerName = "postgres"

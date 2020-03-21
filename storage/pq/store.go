@@ -3,13 +3,13 @@ package pq
 import (
 	"database/sql"
 	_ "github.com/lib/pq"
-	"identity-web-api/model"
-	"identity-web-api/storage"
-	"t-storage/core/column"
-	"t-storage/core/condition"
-	"t-storage/core/parameter"
-	"t-storage/pq/builder"
-	"t-storage/query"
+	"github.com/tsyrul-alexander/go-query-builder/core/column"
+	"github.com/tsyrul-alexander/go-query-builder/core/condition"
+	"github.com/tsyrul-alexander/go-query-builder/core/parameter"
+	"github.com/tsyrul-alexander/go-query-builder/pq/builder"
+	"github.com/tsyrul-alexander/go-query-builder/query"
+	"github.com/tsyrul-alexander/identity-web-api/model"
+	"github.com/tsyrul-alexander/identity-web-api/storage"
 )
 //Storage ...
 type Storage struct {

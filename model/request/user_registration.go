@@ -2,7 +2,7 @@ package request
 
 import (
 	"github.com/google/uuid"
-	"identity-web-api/model"
+	"github.com/tsyrul-alexander/identity-web-api/model"
 )
 
 //UserRegistration ...
