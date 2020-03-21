@@ -35,7 +35,7 @@ func (s *Server) UseRouting() *mux.Router {
 	var router = mux.NewRouter()
 	router.Use(handlers.CORS(handlers.AllowedOrigins([]string{"*"})))
 	var authorizationController = controller.AuthorizationController{Storage: s.Storage, Authentication: getAuthenticationMethod()}
-	var authenticationController = controller.AuthenticationController{Storage: s.Storage}
+	var authenticationController = controller.AuthenticationController{Storage: s.Storage, Authentication: getAuthenticationMethod()}
 	router.HandleFunc("/authorization/register", authorizationController.Registration).Methods("POST")
 	router.HandleFunc("/authorization/login", authenticationController.Login).Methods("POST")
 	router.HandleFunc("/ping", func(writer http.ResponseWriter, request *http.Request) {

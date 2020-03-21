@@ -24,8 +24,8 @@ func (controller *AuthenticationController)Login(w http.ResponseWriter, r *http.
 		setError(w, DbError, err)
 		return
 	}
-	if !user.DefaultIdentity.Password.GetIsCompareHashPassword(userLogin.Password) {
-		setError(w, InvalidCredential, err)
+	if user == nil || !user.DefaultIdentity.Password.GetIsCompareHashPassword(userLogin.Password) {
+		setError(w, InvalidCredential, nil)
 		return
 	}
 	var token, e = controller.Authentication.GenerateToken(user)

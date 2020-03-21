@@ -1,4 +1,4 @@
 {
-  "DB_CONNECTION_STRING": "user=postgres password=123 dbname=Test sslmode=disable",
+  "DB_CONNECTION_STRING": "user=TestUser password=123 dbname=Test sslmode=disable",
   "JWT_KEY": "Azazazazazaza"
 }

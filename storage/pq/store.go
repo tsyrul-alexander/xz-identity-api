@@ -5,6 +5,7 @@ import (
 	_ "github.com/lib/pq"
 	"identity-web-api/model"
 	"identity-web-api/storage"
+	"t-storage/core/column"
 	"t-storage/core/condition"
 	"t-storage/core/parameter"
 	"t-storage/pq/builder"
@@ -47,6 +48,7 @@ func (store *Storage) CreateUser(user *model.User) error {
 //GetUser ...
 func (store *Storage) GetUser(login string) (*model.User, error) {
 	var s = builder.CreateSelect(UserTableName)
+	s.RowCount = 1
 	setUserColumns(s)
 	setUserJoins(s)
 	setUserCondition(s, login)
@@ -54,21 +56,25 @@ func (store *Storage) GetUser(login string) (*model.User, error) {
 	if err != nil {
 		return nil, err
 	}
-	if len(*rows) == 0 {
+	if rows == nil || len(*rows) == 0 {
 		return nil, nil
 	}
 	var row = (*rows)[0]
 	var user = &model.User{
-		ID:              row.GetUuidValue("Id"),
-		Name:            "",
-		IdentityType:    0,
-		DefaultIdentity: model.DefaultIdentity{},
+		ID:           row.GetUuidValue("UserId"),
+		Name:         row.GetStringValue("UserName"),
+		IdentityType: model.IdentityType(row.GetIntValue("UserIdentityType")),
+		DefaultIdentity: model.DefaultIdentity{
+			ID:       row.GetUuidValue(DefaultIdentityTableName + "Id"),
+			Login:    row.GetStringValue(DefaultIdentityTableName + "Login"),
+			Password: model.HashPassword(row.GetStringValue(DefaultIdentityTableName + "Password")),
+		},
 	}
 	return user, nil
 }
 
 func getCreateUserInsert(user *model.User) *query.Insert {
-	var columnValues = query.ColumnValueList{}
+	var columnValues = column.ColumnValueList{}
 	columnValues["Id"] = parameter.CreateGuidParameter(user.ID)
 	columnValues["Name"] = parameter.CreateStringParameter(user.Name)
 	columnValues["IdentityType"] = parameter.CreateIntParameter(int(user.IdentityType))
@@ -84,7 +90,7 @@ func getCreateUserCredentialsInsert(user *model.User) *query.Insert {
 }
 
 func getCreateUserDefaultCredentialsInsert(user *model.User) *query.Insert {
-	var columnValues = query.ColumnValueList{}
+	var columnValues = column.ColumnValueList{}
 	columnValues["Id"] = parameter.CreateGuidParameter(user.DefaultIdentity.ID)
 	columnValues["Login"] = parameter.CreateStringParameter(user.DefaultIdentity.Login)
 	columnValues["Password"] = parameter.CreateStringParameter(user.DefaultIdentity.Password.String())

@@ -10,3 +10,15 @@ CREATE TABLE "User" (
     "IdentityType" INTEGER NOT NULL,
     "DefaultIdentityId" UUID REFERENCES "DefaultIdentity"("Id")
 );
+
+CREATE TABLE "Role" (
+    "Id" UUID PRIMARY KEY,
+    "Name" VARCHAR (250),
+    "Code" INTEGER NOT NULL
+);
+
+CREATE TABLE "UserRole" (
+    "UserId" UUID REFERENCES "User"("Id"),
+    "RoleId" UUID REFERENCES "Role"("Id"),
+    PRIMARY KEY ("UserId", "RoleId")
+);
