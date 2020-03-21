@@ -1,8 +1,13 @@
 {
-	"ImportPath": "identity-web-api",
+	"ImportPath": "github.com/tsyrul-alexander/identity-web-api",
 	"GoVersion": "go1.14",
 	"GodepVersion": "v80",
 	"Deps": [
+		{
+			"ImportPath": "github.com/dgrijalva/jwt-go",
+			"Comment": "v3.2.0-20-gdc14462",
+			"Rev": "dc14462fd58732591c7fa58cc8496d6824316a82"
+		},
 		{
 			"ImportPath": "github.com/fsnotify/fsnotify",
 			"Comment": "v1.4.9",
@@ -12,6 +17,11 @@
 			"ImportPath": "github.com/google/uuid",
 			"Comment": "v1.1.1-7-gc2e93f3",
 			"Rev": "c2e93f3ae59f2904160ceaab466009f965df46d6"
+		},
+		{
+			"ImportPath": "github.com/gorilla/handlers",
+			"Comment": "v1.4.2-3-gf08afc1",
+			"Rev": "f08afc1876ad882db8074bcb8a4cc96107d3a5f4"
 		},
 		{
 			"ImportPath": "github.com/gorilla/mux",
@@ -132,6 +142,42 @@
 			"ImportPath": "github.com/subosito/gotenv",
 			"Comment": "v1.2.0-7-gde67a66",
 			"Rev": "de67a6614a4de71ad5e380b6946e56ab957d58c5"
+		},
+		{
+			"ImportPath": "github.com/tsyrul-alexander/go-query-builder/builder",
+			"Rev": "640d00a7c31086962fa76d7d60e73983bbba5e7a"
+		},
+		{
+			"ImportPath": "github.com/tsyrul-alexander/go-query-builder/core/column",
+			"Rev": "640d00a7c31086962fa76d7d60e73983bbba5e7a"
+		},
+		{
+			"ImportPath": "github.com/tsyrul-alexander/go-query-builder/core/condition",
+			"Rev": "640d00a7c31086962fa76d7d60e73983bbba5e7a"
+		},
+		{
+			"ImportPath": "github.com/tsyrul-alexander/go-query-builder/core/join",
+			"Rev": "640d00a7c31086962fa76d7d60e73983bbba5e7a"
+		},
+		{
+			"ImportPath": "github.com/tsyrul-alexander/go-query-builder/core/parameter",
+			"Rev": "640d00a7c31086962fa76d7d60e73983bbba5e7a"
+		},
+		{
+			"ImportPath": "github.com/tsyrul-alexander/go-query-builder/pq/builder",
+			"Rev": "640d00a7c31086962fa76d7d60e73983bbba5e7a"
+		},
+		{
+			"ImportPath": "github.com/tsyrul-alexander/go-query-builder/query",
+			"Rev": "640d00a7c31086962fa76d7d60e73983bbba5e7a"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/bcrypt",
+			"Rev": "1b76d66859c6111b3d5c3ea6600ea44dc188bf12"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/blowfish",
+			"Rev": "1b76d66859c6111b3d5c3ea6600ea44dc188bf12"
 		},
 		{
 			"ImportPath": "golang.org/x/sys/unix",
