@@ -1,4 +1,25 @@
 {
-  "DB_CONNECTION_STRING": "user=TestUser password=123 dbname=Test sslmode=disable",
-  "JWT_KEY": "Azazazazazaza"
+  "Server": {
+    "Ip": "localhost",
+    "Port": 8081
+  },
+  "Authorized": {
+    "Jwt": {
+      "Key": "azazaza"
+    }
+  },
+  "Storage": {
+    "Data": {
+      "PQ": {
+        "ConnectionString": "postgres://testuser:123@localhost/Test?sslmode=disable"
+      }
+    },
+    "Memory": {
+      "Redis": {
+        "Address": "localhost:6379",
+        "Password": "123",
+        "Db": 0
+      }
+    }
+  }
 }

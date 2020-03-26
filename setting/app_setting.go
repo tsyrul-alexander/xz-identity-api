@@ -3,14 +3,35 @@ package setting
 import (
 	"github.com/spf13/viper"
 	"log"
+	"strings"
 )
 
 type AppSetting struct {
-	DbConnectionString string `mapstructure:"DB_CONNECTION_STRING"`
-	ServerIp string `mapstructure:"SERVICE_IP"`
-	ServerPort int `mapstructure:"SERVER_PORT"`
-	JwtKey string `mapstructure:"JWT_KEY"`
+	Server struct {
+		Ip string
+		Port int
+	}
+	Authorized struct {
+		Jwt struct {
+			Key string
+		}
+	}
+	Storage struct {
+		Data struct {
+			PQ struct {
+				ConnectionString string
+			}
+		}
+		Memory struct {
+			Redis struct {
+				Address string
+				Password string
+				Db int
+			}
+		}
+	}
 }
+
 const FilePath string = "config.json"
 var instance *AppSetting
 
@@ -34,6 +55,8 @@ func setSettingValue(v *viper.Viper, setting *AppSetting) {
 }
 func configureViper() *viper.Viper {
 	var v = viper.New()
+	replacer := strings.NewReplacer(".", "_")
+	v.SetEnvKeyReplacer(replacer)
 	setDefaultValues(v)
 	setConfigFile(v)
 	v.AutomaticEnv()
