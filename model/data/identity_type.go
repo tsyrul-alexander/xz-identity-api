@@ -1,4 +1,4 @@
-package model
+package data
 
 type IdentityType int
 

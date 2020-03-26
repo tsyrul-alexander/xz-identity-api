@@ -1,12 +1,12 @@
-package model
+package data
 
 import "github.com/google/uuid"
 
 //User ...
 type User struct {
-	ID uuid.UUID
-	Name string
-	IdentityType IdentityType
+	ID              uuid.UUID
+	Name            string
+	IdentityType    IdentityType
 	DefaultIdentity DefaultIdentity
 }
 
