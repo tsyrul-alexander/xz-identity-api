@@ -7,7 +7,7 @@ import (
 
 const providerName = "postgres"
 
-func (store *Storage)ExecuteSelect(s *query.Select) (*[]query.Row, error) {
+func (store *DataStorage)ExecuteSelect(s *query.Select) (*[]query.Row, error) {
 	var result *[]query.Row
 	var err = store.OpenDb(func(db *sql.DB) error {
 		var rows, err = s.Execute(db)
@@ -17,7 +17,7 @@ func (store *Storage)ExecuteSelect(s *query.Select) (*[]query.Row, error) {
 	return result, err
 }
 
-func (store *Storage)ExecuteInsert(insert *query.Insert) (*sql.Result, error) {
+func (store *DataStorage)ExecuteInsert(insert *query.Insert) (*sql.Result, error) {
 	var result sql.Result
 	var err = store.OpenDb(func(db *sql.DB) error {
 		var r, err = insert.Execute(db)
@@ -27,7 +27,7 @@ func (store *Storage)ExecuteInsert(insert *query.Insert) (*sql.Result, error) {
 	return &result, err
 }
 
-func (store *Storage) OpenDb(f func(db *sql.DB) error) error  {
+func (store *DataStorage) OpenDb(f func(db *sql.DB) error) error  {
 	var db, err = sql.Open(providerName, store.Config.ConnectionString)
 	if err != nil {
 		return err

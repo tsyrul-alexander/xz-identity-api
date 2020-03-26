@@ -6,6 +6,8 @@ import (
 	"net/http"
 )
 
+const AuthorizedTokenName = "Authorization"
+
 //SetResponse ...
 func SetResponse(w http.ResponseWriter, data interface{}) {
 	w.Header().Add("Content-Type", "application/json")
@@ -25,4 +27,8 @@ func setError(w http.ResponseWriter, data ServiceError, e error) {
 func decodeJsonBody(r *http.Request, obj interface{}) error {
 	var jsonDecoder = json.NewDecoder(r.Body)
 	return jsonDecoder.Decode(obj)
+}
+
+func getAuthorizedToken(r *http.Request) string {
+	return r.Header.Get(AuthorizedTokenName)
 }

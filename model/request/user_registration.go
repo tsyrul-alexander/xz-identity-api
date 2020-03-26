@@ -3,6 +3,7 @@ package request
 import (
 	"github.com/google/uuid"
 	"github.com/tsyrul-alexander/identity-web-api/model"
+	"github.com/tsyrul-alexander/identity-web-api/model/data"
 )
 
 //UserRegistration ...
@@ -12,12 +13,12 @@ type UserRegistration struct {
 	Name string `json:"name"`
 }
 
-func (userRegistration *UserRegistration) GetUser() *model.User {
-	return &model.User{
+func (userRegistration *UserRegistration) GetUser() *data.User {
+	return &data.User{
 		ID:           uuid.New(),
 		Name:         userRegistration.Name,
-		IdentityType: model.IdentityTypeDefault,
-		DefaultIdentity: model.DefaultIdentity{
+		IdentityType: data.IdentityTypeDefault,
+		DefaultIdentity: data.DefaultIdentity{
 			ID:       uuid.New(),
 			Login:    userRegistration.Login,
 			Password: model.CreateHashPassword(userRegistration.Password),

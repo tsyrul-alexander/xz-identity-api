@@ -3,6 +3,7 @@ package controller
 import (
 	"github.com/tsyrul-alexander/identity-web-api/core/authentication"
 	"github.com/tsyrul-alexander/identity-web-api/model"
+	"github.com/tsyrul-alexander/identity-web-api/model/data"
 	"github.com/tsyrul-alexander/identity-web-api/model/request"
 	"github.com/tsyrul-alexander/identity-web-api/model/response"
 	"github.com/tsyrul-alexander/identity-web-api/storage"
@@ -11,7 +12,7 @@ import (
 
 //AuthorizationController ...
 type AuthorizationController struct {
-	Storage storage.Storage
+	Storage storage.DataStorage
 	Authentication authentication.Authentication
 }
 
@@ -36,6 +37,6 @@ func (controller *AuthorizationController) Registration(w http.ResponseWriter, r
 
 //
 
-func createUser(dataStorage storage.Storage, user *model.User) error {
-	return dataStorage.CreateUser(user)
+func createUser(dataStorage storage.DataStorage, user *data.User) error {
+	return  dataStorage.CreateUser(user, model.UserRoleClient)
 }

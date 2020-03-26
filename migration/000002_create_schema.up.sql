@@ -22,3 +22,7 @@ CREATE TABLE "UserRole" (
     "RoleId" UUID REFERENCES "Role"("Id"),
     PRIMARY KEY ("UserId", "RoleId")
 );
+
+INSERT INTO "Role"("Id", "Name", "Code") VALUES(uuid_generate_v4(), 'Admin', 1);
+INSERT INTO "Role"("Id", "Name", "Code") VALUES(uuid_generate_v4(), 'Client', 2);
+INSERT INTO "Role"("Id", "Name", "Code") VALUES(uuid_generate_v4(), 'Account', 3);

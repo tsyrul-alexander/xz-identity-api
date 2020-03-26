@@ -14,13 +14,14 @@ import (
 
 //Server ...
 type Server struct {
-	Config  Config
-	Storage storage.Storage
+	Config        Config
+	DataStorage   storage.DataStorage
+	MemoryStorage storage.MemoryStorage
 }
 
 //Create ...
-func Create(config Config, storage storage.Storage) *Server {
-	return &Server{Config: config, Storage: storage}
+func Create(config Config, storage storage.DataStorage, memoryStorage storage.MemoryStorage) *Server {
+	return &Server{Config: config, DataStorage: storage, MemoryStorage: memoryStorage}
 }
 
 //Start ...
@@ -34,17 +35,30 @@ func (s *Server) Start() error {
 func (s *Server) UseRouting() *mux.Router {
 	var router = mux.NewRouter()
 	router.Use(handlers.CORS(handlers.AllowedOrigins([]string{"*"})))
-	var authorizationController = controller.AuthorizationController{Storage: s.Storage, Authentication: getAuthenticationMethod()}
-	var authenticationController = controller.AuthenticationController{Storage: s.Storage, Authentication: getAuthenticationMethod()}
+	var authorizationController = s.configureAuthorizationController()
+	var authenticationController = s.configureAuthenticationController()
 	router.HandleFunc("/authorization/register", authorizationController.Registration).Methods("POST")
 	router.HandleFunc("/authorization/login", authenticationController.Login).Methods("POST")
+	router.HandleFunc("/authorization/get-user-info", authenticationController.GetUserInfo).Methods("GET")
 	router.HandleFunc("/ping", func(writer http.ResponseWriter, request *http.Request) {
 		controller.SetResponse(writer, "pong")
 	})
 	return router
 }
 
+func (s *Server) configureAuthorizationController() *controller.AuthorizationController {
+	return &controller.AuthorizationController{Storage: s.DataStorage, Authentication: getAuthenticationMethod()}
+}
+
+func (s *Server) configureAuthenticationController() *controller.AuthenticationController {
+	return &controller.AuthenticationController{
+		DataStorage:    s.DataStorage,
+		Authentication: getAuthenticationMethod(),
+		MemoryStorage:  s.MemoryStorage,
+	}
+}
+
 func getAuthenticationMethod() authentication.Authentication {
 	var s = setting.GetAppSetting()
-	return &jwt.Authentication{JwtKey: s.JwtKey}
+	return &jwt.Authentication{JwtKey: s.Authorized.Jwt.Key}
 }
