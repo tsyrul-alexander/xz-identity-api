@@ -1,7 +1,11 @@
 package authentication
 
-import "github.com/tsyrul-alexander/identity-web-api/model"
+import (
+	"github.com/google/uuid"
+	"github.com/tsyrul-alexander/identity-web-api/model/data"
+)
 
 type Authentication interface {
-	GenerateToken(user *model.User) (string, error)
+	GenerateToken(user *data.User) (string, error)
+	GetUserId(token string) (uuid.UUID, error)
 }
