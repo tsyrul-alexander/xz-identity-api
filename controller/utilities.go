@@ -2,6 +2,7 @@ package controller
 
 import (
 	"encoding/json"
+	"github.com/tsyrul-alexander/identity-web-api/model/response"
 	"log"
 	"net/http"
 )
@@ -21,7 +22,7 @@ func setError(w http.ResponseWriter, data ServiceError, e error) {
 		log.Println(e.Error())
 	}
 	w.WriteHeader(data.StatusCode)
-	SetResponse(w, data)
+	SetResponse(w, response.Error{Message:data.Message, Code:data.Code})
 }
 
 func decodeJsonBody(r *http.Request, obj interface{}) error {
