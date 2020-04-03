@@ -3,7 +3,6 @@ package controller
 import (
 	"github.com/tsyrul-alexander/identity-web-api/core/authentication"
 	"github.com/tsyrul-alexander/identity-web-api/model/memory"
-	"github.com/tsyrul-alexander/identity-web-api/model/request"
 	"github.com/tsyrul-alexander/identity-web-api/model/response"
 	"github.com/tsyrul-alexander/identity-web-api/storage"
 	"net/http"
@@ -16,17 +15,19 @@ type AuthenticationController struct {
 }
 
 func (controller *AuthenticationController)Login(w http.ResponseWriter, r *http.Request) {
-	var userLogin = &request.UserLogin{}
-	if err := decodeJsonBody(r, &userLogin); err != nil {
-		setError(w, InvalidRequest, err)
+	var query = r.URL.Query()
+	var login = query.Get("login")
+	var password = query.Get("password")
+	if login == "" || password == "" {
+		setError(w, InvalidRequest, nil)
 		return
 	}
-	var user, err = controller.DataStorage.GetUserByLogin(userLogin.Login)
+	var user, err = controller.DataStorage.GetUserByLogin(login)
 	if err != nil {
 		setError(w, DbError, err)
 		return
 	}
-	if user == nil || !user.DefaultIdentity.Password.GetIsCompareHashPassword(userLogin.Password) {
+	if user == nil || !user.DefaultIdentity.Password.GetIsCompareHashPassword(password) {
 		setError(w, InvalidCredential, nil)
 		return
 	}
@@ -39,7 +40,7 @@ func (controller *AuthenticationController)Login(w http.ResponseWriter, r *http.
 	SetResponse(w, response.Login{Token:token})
 }
 
-func (controller *AuthenticationController)GetUserInfo(w http.ResponseWriter, r *http.Request)  {
+func (controller *AuthenticationController)GetUserInfo(w http.ResponseWriter, r *http.Request) {
 	var token = getAuthorizedToken(r)
 	if token == "" {
 		setError(w, AuthenticationRequired, nil)

@@ -38,7 +38,7 @@ func (s *Server) UseRouting() *mux.Router {
 	var authorizationController = s.configureAuthorizationController()
 	var authenticationController = s.configureAuthenticationController()
 	router.HandleFunc("/authorization/register", authorizationController.Registration).Methods("POST")
-	router.HandleFunc("/authorization/login", authenticationController.Login).Methods("POST")
+	router.HandleFunc("/authorization/login", authenticationController.Login).Methods("GET")
 	router.HandleFunc("/authorization/get-user-info", authenticationController.GetUserInfo).Methods("GET")
 	router.HandleFunc("/ping", func(writer http.ResponseWriter, request *http.Request) {
 		controller.SetResponse(writer, "pong")
