@@ -1,5 +1,5 @@
 {
-	"ImportPath": "github.com/tsyrul-alexander/identity-web-api",
+	"ImportPath": "github.com/tsyrul-alexander/xz-identity-api",
 	"GoVersion": "go1.14",
 	"GodepVersion": "v80",
 	"Deps": [

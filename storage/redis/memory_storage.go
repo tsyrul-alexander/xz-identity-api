@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/go-redis/redis"
 	"github.com/google/uuid"
-	"github.com/tsyrul-alexander/identity-web-api/model/memory"
+	"github.com/tsyrul-alexander/xz-identity-api/model/memory"
 	"log"
 )
 

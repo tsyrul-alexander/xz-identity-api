@@ -2,7 +2,7 @@ package controller
 
 import (
 	"encoding/json"
-	"github.com/tsyrul-alexander/identity-web-api/model/response"
+	"github.com/tsyrul-alexander/xz-identity-api/model/response"
 	"log"
 	"net/http"
 )

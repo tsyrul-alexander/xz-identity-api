@@ -2,7 +2,7 @@ package authentication
 
 import (
 	"github.com/google/uuid"
-	"github.com/tsyrul-alexander/identity-web-api/model/data"
+	"github.com/tsyrul-alexander/xz-identity-api/model/data"
 )
 
 type Authentication interface {

@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.com/tsyrul-alexander/identity-web-api/server"
-	"github.com/tsyrul-alexander/identity-web-api/setting"
-	"github.com/tsyrul-alexander/identity-web-api/storage"
-	"github.com/tsyrul-alexander/identity-web-api/storage/pq"
-	"github.com/tsyrul-alexander/identity-web-api/storage/redis"
+	"github.com/tsyrul-alexander/xz-identity-api/server"
+	"github.com/tsyrul-alexander/xz-identity-api/setting"
+	"github.com/tsyrul-alexander/xz-identity-api/storage"
+	"github.com/tsyrul-alexander/xz-identity-api/storage/pq"
+	"github.com/tsyrul-alexander/xz-identity-api/storage/redis"
 	"log"
 )
 

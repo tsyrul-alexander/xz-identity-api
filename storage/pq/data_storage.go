@@ -9,9 +9,9 @@ import (
 	"github.com/tsyrul-alexander/go-query-builder/core/parameter"
 	"github.com/tsyrul-alexander/go-query-builder/pq/builder"
 	"github.com/tsyrul-alexander/go-query-builder/query"
-	"github.com/tsyrul-alexander/identity-web-api/model"
-	"github.com/tsyrul-alexander/identity-web-api/model/data"
-	"github.com/tsyrul-alexander/identity-web-api/storage"
+	"github.com/tsyrul-alexander/xz-identity-api/model"
+	"github.com/tsyrul-alexander/xz-identity-api/model/data"
+	"github.com/tsyrul-alexander/xz-identity-api/storage"
 )
 //DataStorage ...
 type DataStorage struct {

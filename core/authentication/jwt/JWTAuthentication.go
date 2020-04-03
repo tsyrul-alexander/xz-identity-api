@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/google/uuid"
-	"github.com/tsyrul-alexander/identity-web-api/model/data"
+	"github.com/tsyrul-alexander/xz-identity-api/model/data"
 )
 
 var NotValidTokenError = errors.New("not valid token")

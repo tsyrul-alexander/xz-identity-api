@@ -1,12 +1,12 @@
 package controller
 
 import (
-	"github.com/tsyrul-alexander/identity-web-api/core/authentication"
-	"github.com/tsyrul-alexander/identity-web-api/model"
-	"github.com/tsyrul-alexander/identity-web-api/model/data"
-	"github.com/tsyrul-alexander/identity-web-api/model/request"
-	"github.com/tsyrul-alexander/identity-web-api/model/response"
-	"github.com/tsyrul-alexander/identity-web-api/storage"
+	"github.com/tsyrul-alexander/xz-identity-api/core/authentication"
+	"github.com/tsyrul-alexander/xz-identity-api/model"
+	"github.com/tsyrul-alexander/xz-identity-api/model/data"
+	"github.com/tsyrul-alexander/xz-identity-api/model/request"
+	"github.com/tsyrul-alexander/xz-identity-api/model/response"
+	"github.com/tsyrul-alexander/xz-identity-api/storage"
 	"net/http"
 )
 
