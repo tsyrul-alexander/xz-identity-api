@@ -17,7 +17,7 @@ func SetResponse(w http.ResponseWriter, data interface{}) {
 	}
 }
 
-func setError(w http.ResponseWriter, data ServiceError, e error) {
+func setError(w http.ResponseWriter, data *ServiceError, e error) {
 	if e != nil {
 		log.Println(e.Error())
 	}

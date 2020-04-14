@@ -37,14 +37,14 @@ func (store *DataStorage) CreateUser(user *data.User, roles ...model.UserRole) e
 		if err != nil {
 			return err
 		}
-		if _, err = credentialsUserInsert.Execute(db); err != nil {
+		if _, err = credentialsUserInsert.ExecuteTx(tx); err != nil {
 			return tx.Rollback()
 		}
-		if _, err = userInsert.Execute(db); err != nil {
+		if _, err = userInsert.ExecuteTx(tx); err != nil {
 			return tx.Rollback()
 		}
-		if err := store.CreateUserRole(user.ID, roles...); err != nil {
-			tx.Rollback()
+		if err := store.CreateUserRole(user.ID, tx, roles...); err != nil {
+			return tx.Rollback()
 		}
 		return tx.Commit()
 	})
@@ -56,14 +56,14 @@ func (store *DataStorage)GetUserByLogin(login string) (*data.User, error) {
 	return store.getUser("Login", login)
 }
 
-func (store *DataStorage)CreateUserRole(userId uuid.UUID, roles ...model.UserRole) error {
+func (store *DataStorage)CreateUserRole(userId uuid.UUID, tx *sql.Tx, roles ...model.UserRole) error {
 	var rolesIds, err = store.getRolesId(roles)
 	if err != nil {
 		return err
 	}
 	for _, r := range rolesIds {
 		var insert = getUserRoleInsert(userId, r)
-		if _, err := store.ExecuteInsert(insert); err != nil {
+		if _, err := insert.ExecuteTx(tx); err != nil {
 			return err
 		}
 	}
